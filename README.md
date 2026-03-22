@@ -6,14 +6,24 @@ A personal CLI tool for tracking LeetCode problems and scheduling reviews using 
 
 When you solve a problem, you add it. The tool schedules review sessions at increasing intervals (2 → 7 → 14 → 30 days) based on how well you did each time. A daily macOS notification reminds you when problems are due.
 
+## Installation
+
+Add this alias to your `~/.zshrc` so you can use `leet` directly:
+
+```
+alias leet="python3 /path/to/leet.py"
+```
+
+Then reload your shell: `source ~/.zshrc`
+
 ## Commands
 
 ```
-python3 leet.py add       # Log a newly solved problem
-python3 leet.py today     # See what's due today
-python3 leet.py review    # Work through due problems one by one
-python3 leet.py list      # See all tracked problems
-python3 leet.py notify    # Fire a macOS notification if anything is due (used by launchd)
+leet add       # Log a newly solved problem
+leet today     # See what's due today
+leet review    # Work through due problems one by one
+leet list      # See all tracked problems
+leet notify    # Fire a macOS notification if anything is due (used by launchd)
 ```
 
 ## Review outcomes
