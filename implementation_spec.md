@@ -218,3 +218,17 @@ Uses `argparse` with subcommands. No external dependencies — standard library 
 - No external dependencies or database
 - No TUI framework / curses
 - No tests (optional, your call)
+
+---
+
+## v1.1 — `notify` command ✓ Implemented
+
+A lightweight push-based reminder so you don't have to remember to run `leet today`.
+
+- **What it does:** Checks for due problems. If any exist, fires a macOS notification via `osascript`. If nothing is due, does nothing (silent).
+- **Scheduling:** Registered as a `launchd` agent at `~/Library/LaunchAgents/com.mominalvi.leetcode-notify.plist`. Runs daily at 9:00 AM, or on next login/wake if the Mac was asleep.
+- **Script location:** `~/.leetcode-tracker/leet.py` — copied here because launchd cannot access `~/Desktop` due to macOS permissions restrictions.
+- **Why `launchd` over cron:** `launchd` fires the missed job on next wake if the Mac was asleep at the scheduled time. Cron skips missed runs entirely.
+- **Key plist settings:**
+  - `StartCalendarInterval` — triggers at 9:00 AM daily
+  - `SessionCreate true` — required for `osascript` notifications to reach the display from a background process

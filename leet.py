@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import subprocess
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -243,6 +244,25 @@ def cmd_list(args):
     print()
 
 
+def cmd_notify(args):
+    problems = load_problems()
+    today = date.today()
+
+    due = [p for p in problems if date.fromisoformat(p["next_review"]) <= today]
+
+    if not due:
+        return
+
+    count = len(due)
+    title = "LeetCode Review Due"
+    body = f"{count} problem{'s' if count != 1 else ''} due today. Run `leet today` to see them."
+
+    subprocess.run(
+        ["osascript", "-e", f'display notification "{body}" with title "{title}"'],
+        check=False,
+    )
+
+
 # --- Entry point ---
 
 def main():
@@ -256,6 +276,7 @@ def main():
     subparsers.add_parser("today", help="Show problems due today")
     subparsers.add_parser("review", help="Review due problems")
     subparsers.add_parser("list", help="List all tracked problems")
+    subparsers.add_parser("notify", help="Send a macOS notification if problems are due")
 
     args = parser.parse_args()
 
@@ -264,6 +285,7 @@ def main():
         "today": cmd_today,
         "review": cmd_review,
         "list": cmd_list,
+        "notify": cmd_notify,
     }
 
     if args.command in commands:
